@@ -2,6 +2,7 @@
 import sys #we will need sys so the user can quit
 import pygame
 from bullets import Bullet #we dont care about the update or draw functions. Just the class
+from monster import Monster
 
 def check_events(hero, bullets, game_settings, screen):
 	for event in pygame.event.get(): #run through all pygame events
@@ -23,9 +24,11 @@ def check_events(hero, bullets, game_settings, screen):
 
 
 # Handle all teh screen updates and drawing
-def update_screen(settings, screen, hero, bullets):
+def update_screen(settings, screen, hero, enemies, bullets):
 	screen.fill(settings.bg_color)# Fill teh background with our green
 	hero.draw_me() #call the draw method and put the hero on the screen
 	for bullet in bullets.sprites():
 		bullet.draw_bullet()
+	for enemy in enemies.sprites():
+		enemy.draw_me()
 	pygame.display.flip()

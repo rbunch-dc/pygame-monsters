@@ -3,6 +3,7 @@ from hero import Hero #bring in the hero class with all it's methods and glory
 from settings import Settings
 import game_functions as gf
 from pygame.sprite import Group
+from monster import Monster
 
 # Set up the main core function
 def run_game():
@@ -12,12 +13,20 @@ def run_game():
 	pygame.display.set_caption("Monster Attack") #set the message on the status bar
 	hero = Hero(screen) #set a variable equal to the class and pass it the screen
 	bullets = Group() #set the bullets to group
+	enemies = Group()
+	enemies.add(Monster(screen))
+
+	tick = 0 #init counter at 0
 
 	while 1: #run this loop forever...
 		gf.check_events(hero, bullets, game_settings, screen) #call gf (aliased from game_functions module) and get the check_events method
-		hero.update() #update the hero flags		
+		hero.update() #update the hero flags
+		enemies.update(hero, game_settings.enemy_speed)
+		tick += 1
+		if tick % 150 == 0: 
+			enemies.add(Monster(screen))
 		bullets.update() #call the update method in the while loop
-		gf.update_screen(game_settings, screen, hero, bullets) #call the update_screen method which handles updating the screen
+		gf.update_screen(game_settings, screen, hero, enemies, bullets) #call the update_screen method which handles updating the screen
 		for bullet in bullets: #get rid of bullets that are off the screen
 			if bullet.rect.bottom <= 0: #bullet bottom is at the top of the screen
 				bullets.remove(bullet) #call remove() against the group

@@ -7,3 +7,4 @@ class Settings():
 		self.bullet_width = 3
 		self.bullet_height = 10
 		self.bullet_color = 0,0,0
+		self.enemy_speed = 15
