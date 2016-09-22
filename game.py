@@ -18,6 +18,9 @@ def run_game():
 		hero.update() #update the hero flags		
 		bullets.update() #call the update method in the while loop
 		gf.update_screen(game_settings, screen, hero, bullets) #call the update_screen method which handles updating the screen
-
+		for bullet in bullets: #get rid of bullets that are off the screen
+			if bullet.rect.bottom <= 0: #bullet bottom is at the top of the screen
+				bullets.remove(bullet) #call remove() against the group
+		print len(bullets) #print the list bullets for fun
 
 run_game() #Start the game!
