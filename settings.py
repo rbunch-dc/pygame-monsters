@@ -9,3 +9,4 @@ class Settings():
 		self.bullet_color = 0,0,0
 		self.enemy_speed = 1
 		self.mans_left = 3
+		self.game_active = False #init the game as not active

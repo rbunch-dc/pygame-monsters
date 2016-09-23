@@ -13,8 +13,14 @@ def run_game():
 	screen = pygame.display.set_mode(game_settings.screen_size) #Set the screen size with set_mode
 	pygame.display.set_caption("Monster Attack") #set the message on the status bar
 
+	# music courtesy of http://ericskiff.com/music/
+	pygame.mixer.music.load('sounds/music.wav')
+	pygame.mixer.music.play(-1)
+
+
 	# Create a playbutton object and assign to a var
 	play_button = Play_button(screen,'Play')
+	print play_button.rect
 
 	hero = Hero(screen) #set a variable equal to the class and pass it the screen
 	bullets = Group() #set the bullets to group
@@ -24,19 +30,22 @@ def run_game():
 	tick = 0 #init counter at 0
 
 	while 1: #run this loop forever...
-		gf.check_events(hero, bullets, game_settings, screen) #call gf (aliased from game_functions module) and get the check_events method
-		hero.update() #update the hero flags
-		enemies.update(hero, game_settings.enemy_speed)
-		tick += 1
-		if tick % 150 == 0: 
-			enemies.add(Monster(screen))
-		bullets.update() #call the update method in the while loop
-		theDict = groupcollide(enemies, bullets, True, True)
-		# print theDict
+		gf.check_events(hero, bullets, game_settings, screen, play_button) #call gf (aliased from game_functions module) and get the check_events method
 		gf.update_screen(game_settings, screen, hero, enemies, bullets, play_button) #call the update_screen method which handles updating the screen
-		for bullet in bullets: #get rid of bullets that are off the screen
-			if bullet.rect.bottom <= 0: #bullet bottom is at the top of the screen
-				bullets.remove(bullet) #call remove() against the group
-		# print len(bullets) #print the list bullets for fun
+		if game_settings.game_active:
+			hero.update() #update the hero flags
+			enemies.update(hero, game_settings.enemy_speed)
+			tick += 1
+			if tick % 150 == 0: 
+				enemies.add(Monster(screen))
+			bullets.update() #call the update method in the while loop
+			theDict = groupcollide(enemies, bullets, True, True)
+			# print bool(theDict) #if empty... false
+			if(theDict):
+				print "You hit a monster. Play some winning type music"
+			for bullet in bullets: #get rid of bullets that are off the screen
+				if bullet.rect.bottom <= 0: #bullet bottom is at the top of the screen
+					bullets.remove(bullet) #call remove() against the group
+			# print len(bullets) #print the list bullets for fun
 
 run_game() #Start the game!

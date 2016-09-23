@@ -4,10 +4,16 @@ import pygame
 from bullets import Bullet #we dont care about the update or draw functions. Just the class
 from monster import Monster
 
-def check_events(hero, bullets, game_settings, screen):
+def check_events(hero, bullets, game_settings, screen, play_button):
 	for event in pygame.event.get(): #run through all pygame events
 		if event.type == pygame.QUIT: #if the event is the quit event...
 			sys.exit() #quit
+		# Handle Button click
+		elif event.type == pygame.MOUSEBUTTONDOWN:
+			mouse_x, mouse_y = pygame.mouse.get_pos()
+			# print mouse_x, mouse_y
+			if play_button.rect.collidepoint(mouse_x, mouse_y):
+				game_settings.game_active = True
 		elif event.type == pygame.KEYDOWN: #the user pushed a key and it's down
 			if event.key == pygame.K_RIGHT: #the user pressed right
 				hero.moving_right = True #set the flag
@@ -33,6 +39,9 @@ def update_screen(settings, screen, hero, enemies, bullets, play_button):
 		bullet.draw_bullet()
 	for enemy in enemies.sprites():
 		enemy.draw_me()
-	play_button.draw_button()
-		
+
+
+	if not settings.game_active:
+		play_button.draw_button()
+
 	pygame.display.flip()
