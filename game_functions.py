@@ -24,11 +24,15 @@ def check_events(hero, bullets, game_settings, screen):
 
 
 # Handle all teh screen updates and drawing
-def update_screen(settings, screen, hero, enemies, bullets):
+def update_screen(settings, screen, hero, enemies, bullets, play_button):
+
+
 	screen.fill(settings.bg_color)# Fill teh background with our green
 	hero.draw_me() #call the draw method and put the hero on the screen
 	for bullet in bullets.sprites():
 		bullet.draw_bullet()
 	for enemy in enemies.sprites():
 		enemy.draw_me()
+	play_button.draw_button()
+		
 	pygame.display.flip()
